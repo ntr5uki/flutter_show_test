@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'class_lib/FilePickerDemo';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -58,7 +60,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Uint8List? _receivedImageData;
   // Uint8List? _imgin = [];
+    void _handleFilePicked(Uint8List data) {
+    setState(() {
+      _receivedImageData = data;
+      _counter = _receivedImageData!.length;
+    });
+    }
 
   void _incrementCounter() async {
     // This call to setState tells the Flutter framework that something has
@@ -67,12 +76,13 @@ class _MyHomePageState extends State<MyHomePage> {
     // _counter without calling setState(), then the build method would not be
     // called again, and so nothing would appear to happen.
     for (int i = 1; i <= 10; i++) {
-      await Future.delayed(const Duration(milliseconds: 10));
+      await Future.delayed(const Duration(milliseconds: 20));
       setState(() {
         _counter += 1;
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -111,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              '按下后数字增加10:',
               style: TextStyle(
                 fontSize: 32,
                 color: Color.fromARGB(221, 211, 13, 13),
@@ -122,22 +132,42 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Container(
+              margin: const EdgeInsets.all(5),
               width: 150,
               height: 150,
               decoration: const BoxDecoration(color: Colors.yellow),
               child: Image.network(
-                "https://www.itying.com/themes/itying/images/ionic4.png",
+                "https://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Sourcehttps://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Source",
                 fit: BoxFit.cover,
               ),
             ),
+            Container(
+              margin: const EdgeInsets.all(5),
+              child: ElevatedButton(
+                onPressed: _incrementCounter,
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+                  ),
+                ),
+                child: const Text('Start Incrementing'),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(5),
+              
+              child: FilePickerDemo(onFilePicked: _handleFilePicked),
+              ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
