@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'class_lib/FilePickerDemo';
+import 'class_lib/AnimatedNumberContainer';
 
 import 'package:flutter/material.dart';
 
@@ -62,26 +63,30 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Uint8List? _receivedImageData;
   // Uint8List? _imgin = [];
-    void _handleFilePicked(Uint8List data) {
+  void _handleFilePicked(Uint8List data) {
     setState(() {
       _receivedImageData = data;
       _counter = _receivedImageData!.length;
     });
-    }
+  }
 
-  void _incrementCounter() async {
+  void _incrementCounter() {
     // This call to setState tells the Flutter framework that something has
     // changed in this State, which causes it to rerun the build method below
     // so that the display can reflect the updated values. If we changed
     // _counter without calling setState(), then the build method would not be
     // called again, and so nothing would appear to happen.
-    for (int i = 1; i <= 10; i++) {
-      await Future.delayed(const Duration(milliseconds: 20));
-      setState(() {
-        _counter += 1;
-      });
-    }
+    setState(() {
+    _counter = _counter+10;
+    });
+
+    // for (int i = 1; i <= 10; i++) {
+    //   await Future.delayed(const Duration(milliseconds: 20));
+    //   setState(() {
+    //     _counter += 1;
+    //   });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +132,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Color.fromARGB(221, 211, 13, 13),
               ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            AnimatedNumberContainer(end: _counter),
+            // Text(
+            //   '$_counter',
+            //   style: Theme.of(context).textTheme.headlineMedium,
+            // ),
             Container(
               margin: const EdgeInsets.all(5),
               width: 150,
@@ -159,6 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
               
               child: FilePickerDemo(onFilePicked: _handleFilePicked),
               ),
+            
           ],
         ),
       ),
@@ -171,3 +178,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+
