@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+
 class AnimatedNumberContainer extends StatefulWidget {
   final int end;
 
-  const AnimatedNumberContainer({Key? key, required this.end}) : super(key: key);
+  const AnimatedNumberContainer({Key? key, required this.end})
+      : super(key: key);
 
   @override
   AnimatedNumberContainerState createState() => AnimatedNumberContainerState();
 }
 
-class AnimatedNumberContainerState extends State<AnimatedNumberContainer> with SingleTickerProviderStateMixin {
+class AnimatedNumberContainerState extends State<AnimatedNumberContainer>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<int> _animation;
-  int _begin = 0;  // 初始值
+  int _begin = 0; // 初始值
 
   @override
   void initState() {
@@ -55,7 +58,7 @@ class AnimatedNumberContainerState extends State<AnimatedNumberContainer> with S
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(5),
       // color: Colors.blue[100],
       child: Center(
         child: Text(

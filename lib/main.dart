@@ -1,9 +1,10 @@
 import 'dart:typed_data';
-
-import 'class_lib/FilePickerDemo';
-import 'class_lib/AnimatedNumberContainer';
-
+import 'class_lib/file_picker_demo.dart';
+import 'class_lib/animated_number_container.dart';
+// import 'class_lib/image_player.dart';
+import 'class_lib/image_display_page.dart';
 import 'package:flutter/material.dart';
+import 'class_lib/number_selector.dart';
 
 void main() {
   runApp(const MyApp());
@@ -61,13 +62,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _index = 0;
   Uint8List? _receivedImageData;
+  Uint8List? _currentBmpData;
   // Uint8List? _imgin = [];
+
   void _handleFilePicked(Uint8List data) {
     setState(() {
       _receivedImageData = data;
       _counter = _receivedImageData!.length;
     });
+  }
+
+  void _NumberSelected(int number) {
+    setState(() {
+      _index = number;
+    });
+    // 这里可以添加更多的逻辑，比如更新startPoint
+  }
+
+  void _currentIndexcallback(Uint8List? data) {
+    _currentBmpData = data;
   }
 
   void _incrementCounter() {
@@ -77,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // _counter without calling setState(), then the build method would not be
     // called again, and so nothing would appear to happen.
     setState(() {
-    _counter = _counter+10;
+      _counter = _counter + 10;
     });
 
     // for (int i = 1; i <= 10; i++) {
@@ -86,7 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //     _counter += 1;
     //   });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -97,47 +111,59 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              '按下后数字增加10:',
-              style: TextStyle(
-                fontSize: 32,
-                color: Color.fromARGB(221, 211, 13, 13),
-              ),
-            ),
-            AnimatedNumberContainer(end: _counter),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
-            Container(
+        appBar: AppBar(
+          // TRY THIS: Try changing the color here to a specific color (to
+          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
+          // change color while the other colors stay the same.
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center, // 根据需要调整对齐方式
+              children: [
+                // 这里放置您想要在左侧显示的小部件
+                Column(
+                    // 例如，一个容器或其他小部件
+                    children: [
+                      const Text("左侧内容"),
+                      Text(_index.toString()),
+                      DraggableListWheelScrollView(
+                          onNumberSelected: _NumberSelected),
+                    ]),
+                Column(
+                  // Column is also a layout widget. It takes a list of children and
+                  // arranges them vertically. By default, it sizes itself to fit its
+                  // children horizontally, and tries to be as tall as its parent.
+                  //
+                  // Column has various properties to control how it sizes itself and
+                  // how it positions its children. Here we use mainAxisAlignment to
+                  // center the children vertically; the main axis here is the vertical
+                  // axis because Columns are vertical (the cross axis would be
+                  // horizontal).
+                  //
+                  // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
+                  // action in the IDE, or press "p" in the console), to see the
+                  // wireframe for each widget.
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Text(
+                      '按下后数字增加10:',
+                      style: TextStyle(
+                        fontSize: 32,
+                        color: Color.fromARGB(221, 211, 13, 13),
+                      ),
+                    ),
+                    AnimatedNumberContainer(end: _counter),
+                    // Text(
+                    //   '$_counter',
+                    //   style: Theme.of(context).textTheme.headlineMedium,
+                    // ),
+                    /* Container(
               margin: const EdgeInsets.all(5),
               width: 150,
               height: 150,
@@ -146,38 +172,43 @@ class _MyHomePageState extends State<MyHomePage> {
                 "https://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Sourcehttps://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Source",
                 fit: BoxFit.cover,
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(5),
-              child: ElevatedButton(
-                onPressed: _incrementCounter,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
-                  ),
-                ),
-                child: const Text('Start Incrementing'),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(5),
-              
-              child: FilePickerDemo(onFilePicked: _handleFilePicked),
-              ),
-            
-          ],
-        ),
-      ),
+            ), */
+                    ImageDisplayPage(
+                      greyImageData: _receivedImageData,
+                      width: 1024,
+                      height: 1000,
+                      startPoint: _index,
+                      currentBmpData: _currentBmpData,
+                      onDataUpdated: _currentIndexcallback,
+                    ),
 
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: ElevatedButton(
+                        onPressed: _incrementCounter,
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+                          ),
+                        ),
+                        child: const Text('Start Incrementing'),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      child: FilePickerDemo(onFilePicked: _handleFilePicked),
+                    ),
+                  ],
+                ),
+              ]),
+        )
+
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _incrementCounter,
+        //   tooltip: 'Increment',
+        //   child: const Icon(Icons.add),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
-
-
-
