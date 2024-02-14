@@ -19,7 +19,7 @@ class _DraggableListWheelScrollViewState
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 150,
+      width: 100,
       height: 350,
       child: GestureDetector(
         onVerticalDragUpdate: (details) {
@@ -30,11 +30,11 @@ class _DraggableListWheelScrollViewState
         },
         child: ListWheelScrollView.useDelegate(
           controller: _controller,
-          itemExtent: 30,
+          itemExtent: 20,
           useMagnifier: true,
-          magnification: 1.1,
-          offAxisFraction: 0.2,
-          diameterRatio: 1.5,
+          magnification: 1.5,
+          offAxisFraction: 0,
+          diameterRatio: 1.8,
           physics: FixedExtentScrollPhysics(), // 使用FixedExtentScrollPhysics
           onSelectedItemChanged: (index) {
             setState(() {
