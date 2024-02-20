@@ -7,7 +7,7 @@ class ImagePlayer extends StatefulWidget {
   final Uint8List? imageData;
   final int width, height;
 
-  ImagePlayer(
+  const ImagePlayer(
       {Key? key,
       required this.imageData,
       required this.width,
@@ -15,10 +15,10 @@ class ImagePlayer extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ImagePlayerState createState() => _ImagePlayerState();
+  ImagePlayerState createState() => ImagePlayerState();
 }
 
-class _ImagePlayerState extends State<ImagePlayer> {
+class ImagePlayerState extends State<ImagePlayer> {
   int _currentIndex = 0;
   bool _isPlaying = false;
   Timer? _timer;
@@ -51,7 +51,7 @@ class _ImagePlayerState extends State<ImagePlayer> {
   @override
   Widget build(BuildContext context) {
     if (widget.imageData == null) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }
 
     Uint8List currentImage = extractImage(
@@ -75,7 +75,7 @@ class _ImagePlayerState extends State<ImagePlayer> {
             ],
           );
         } else {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
       },
     );

@@ -87,25 +87,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // 这里可以添加更多的逻辑，比如更新startPoint
   }
 
-  // void _currentIndexcallback(Uint8List? data) {
-  //   _currentBmpData = data;
-  // }
-
   void _incrementCounter() {
-    // This call to setState tells the Flutter framework that something has
-    // changed in this State, which causes it to rerun the build method below
-    // so that the display can reflect the updated values. If we changed
-    // _counter without calling setState(), then the build method would not be
-    // called again, and so nothing would appear to happen.
     setState(() {
       _counter = _counter + 10;
     });
-
-    // for (int i = 1; i <= 10; i++) {
-    //   await Future.delayed(const Duration(milliseconds: 20));
-    //   setState(() {
-    //     _counter += 1;
-    //   });
   }
 
   @override
@@ -118,12 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Row(
@@ -140,19 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       onNumberSelected: _numberSelected),
                 ]),
             Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              //
-              // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-              // action in the IDE, or press "p" in the console), to see the
-              // wireframe for each widget.
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text(
@@ -162,21 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Color.fromARGB(221, 211, 13, 13),
                   ),
                 ),
-                AnimatedNumberContainer(end: _counter),
-                // Text(
-                //   '$_counter',
-                //   style: Theme.of(context).textTheme.headlineMedium,
-                // ),
-                /* Container(
-              margin: const EdgeInsets.all(5),
-              width: 150,
-              height: 150,
-              decoration: const BoxDecoration(color: Colors.yellow),
-              child: Image.network(
-                "https://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Sourcehttps://ts3.cn.mm.bing.net/th?id=OIP.PxgzckwC-uzyi38BzezbjwHaHa&w=298&h=204&c=12&rs=1&qlt=99&pcl=faf9f7&bgcl=fffffe&r=0&o=6&dpr=1.3&pid=MultiSMRSV2Source",
-                fit: BoxFit.cover,
-              ),
-            ), */
+                AnimatedNumberContainer(
+                  end: _counter,
+                ),
                 ImageDisplayPage(
                   greyImageData: _receivedImageData,
                   width: _width,
@@ -185,7 +140,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   bmpHead: _bmpHead,
                   // onDataUpdated: _currentIndexcallback,
                 ),
-
                 Container(
                   margin: const EdgeInsets.all(5),
                   child: ElevatedButton(
@@ -210,12 +164,6 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ]),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

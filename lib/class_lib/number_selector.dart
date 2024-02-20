@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 class DraggableListWheelScrollView extends StatefulWidget {
   final Function(int) onNumberSelected;
 
-  DraggableListWheelScrollView({Key? key, required this.onNumberSelected})
+  const DraggableListWheelScrollView({Key? key, required this.onNumberSelected})
       : super(key: key);
 
   @override
-  _DraggableListWheelScrollViewState createState() =>
-      _DraggableListWheelScrollViewState();
+  DraggableListWheelScrollViewState createState() =>
+      DraggableListWheelScrollViewState();
 }
 
-class _DraggableListWheelScrollViewState
+class DraggableListWheelScrollViewState
     extends State<DraggableListWheelScrollView> {
   final FixedExtentScrollController _controller = FixedExtentScrollController();
   int selectedNumber = 0;
@@ -35,7 +35,8 @@ class _DraggableListWheelScrollViewState
           magnification: 1.5,
           offAxisFraction: 0,
           diameterRatio: 1.8,
-          physics: FixedExtentScrollPhysics(), // 使用FixedExtentScrollPhysics
+          physics:
+              const FixedExtentScrollPhysics(), // 使用FixedExtentScrollPhysics
           onSelectedItemChanged: (index) {
             setState(() {
               selectedNumber = index;
