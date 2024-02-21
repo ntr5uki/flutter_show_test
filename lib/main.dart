@@ -119,49 +119,58 @@ class _MyHomePageState extends State<MyHomePage> {
                   DraggableListWheelScrollView(
                       onNumberSelected: _numberSelected),
                 ]),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  '按下后数字增加10:',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Color.fromARGB(221, 211, 13, 13),
-                  ),
-                ),
-                AnimatedNumberContainer(
-                  end: _counter,
-                ),
-                ImageDisplayPage(
-                  greyImageData: _receivedImageData,
-                  width: _width,
-                  height: _height,
-                  startPoint: _index,
-                  bmpHead: _bmpHead,
-                  // onDataUpdated: _currentIndexcallback,
-                ),
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  child: ElevatedButton(
-                    onPressed: _incrementCounter,
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+            const VerticalDivider(),
+            Expanded(
+              // width: 800,
+              // margin: const EdgeInsets.all(5),
+              child: ListView(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Text(
+                        '按下后数字增加10:',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color.fromARGB(221, 211, 13, 13),
+                        ),
                       ),
-                    ),
-                    child: const Text('Start Incrementing'),
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        child: ElevatedButton(
+                          onPressed: _incrementCounter,
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  3), // 这里的10可以根据需要调整为任何数值
+                            ),
+                          ),
+                          child: const Text('Start Incrementing'),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        child: FilePickerDemo(
+                          width: _width,
+                          height: _height,
+                          onFilePicked: _handleFilePicked,
+                        ),
+                      ),
+                      AnimatedNumberContainer(
+                        end: _counter,
+                      ),
+                      ImageDisplayPage(
+                        greyImageData: _receivedImageData,
+                        width: _width,
+                        height: _height,
+                        startPoint: _index,
+                        bmpHead: _bmpHead,
+                        // onDataUpdated: _currentIndexcallback,
+                      ),
+                    ],
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  child: FilePickerDemo(
-                    width: _width,
-                    height: _height,
-                    onFilePicked: _handleFilePicked,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ]),
     );

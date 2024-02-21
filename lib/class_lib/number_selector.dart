@@ -19,7 +19,8 @@ class DraggableListWheelScrollViewState
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
+      margin: const EdgeInsets.all(5),
+      width: 70,
       height: 350,
       child: GestureDetector(
         onVerticalDragUpdate: (details) {
@@ -30,7 +31,7 @@ class DraggableListWheelScrollViewState
         },
         child: ListWheelScrollView.useDelegate(
           controller: _controller,
-          itemExtent: 20,
+          itemExtent: 30,
           useMagnifier: true,
           magnification: 1.5,
           offAxisFraction: 0,

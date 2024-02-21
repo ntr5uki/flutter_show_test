@@ -58,7 +58,6 @@ class ImageDisplayPage extends StatelessWidget {
       bmpHead!,
       greyImageData!,
     );
-    var stopwatch = Stopwatch()..start();
     return RotatedBox(
       quarterTurns: -1,
       child: SizedBox(
@@ -73,7 +72,6 @@ class ImageDisplayPage extends StatelessWidget {
         ),
       ),
     );
-    stopwatch.stop();
-    print("执行时间: ${stopwatch.elapsedMilliseconds} 毫秒");
+
   }
 }
