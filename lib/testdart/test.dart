@@ -6,7 +6,7 @@ Future<void> main() async {
   const height = 1000;
 
   // 读取bmphead.dat
-  var bmpHead = await File('bmphead.dat').readAsBytes();
+  var bmpHead = await File('./bmphead.dat').readAsBytes();
 
   // 读取octa2.dat
   var dataImg = await File('octa2.dat').readAsBytes();

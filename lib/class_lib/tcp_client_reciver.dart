@@ -2,46 +2,45 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
 
-class TcpClientHelper {
+typedef DataReceivedCallback = void Function(Uint8List data);
+
+class TcpClientRecivier {
   RawSocket? _socket;
   final BytesBuilder _dataBuilder = BytesBuilder();
-  final Completer<Uint8List> _completer = Completer<Uint8List>();
   late StreamSubscription<RawSocketEvent> _subscription;
+  final DataReceivedCallback onDataReceived;
+  final int desiredLength;
+
+  TcpClientRecivier({required this.onDataReceived, required this.desiredLength});
 
   Future<void> connect(String host, int port) async {
     _socket = await RawSocket.connect(host, port);
-    _subscription = _socket!.listen(_onData, onDone: _onDone, onError: _onError);    
-    
-  }
-  int getDatabuliderLength(){
-    return _dataBuilder.length;
+    _subscription = _socket!.listen(_onData, onDone: _onDone, onError: _onError);
   }
 
   void _onData(RawSocketEvent event) {
-    print('${event}');
     if (event == RawSocketEvent.read) {
       final data = _socket!.read();
       if (data != null) {
         _dataBuilder.add(data);
+        if (_dataBuilder.length >= desiredLength) {
+          // 调用回调函数
+          onDataReceived(_dataBuilder.takeBytes());
+        }
       }
     }
   }
 
   void _onDone() {
-    print('_onDone');
     _subscription.cancel();
-    _completer.complete(_dataBuilder.takeBytes());
+    if (_dataBuilder.length > 0) {
+      onDataReceived(_dataBuilder.takeBytes());
+    }
   }
 
   void _onError(error) {
     _subscription.cancel();
-    _completer.completeError(error);
-  }
-
-  Future<Uint8List> readAvailableData() async {
-    Uint8List outdata = _dataBuilder.takeBytes();
-    print('outdata length :${outdata.length}');    
-    return outdata;
+    // 可以选择在发生错误时调用回调函数或者处理错误
   }
 
   void dispose() {
