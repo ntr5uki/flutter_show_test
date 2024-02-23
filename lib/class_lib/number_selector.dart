@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DraggableListWheelScrollView extends StatefulWidget {
   final Function(int) onNumberSelected;
 
-  const DraggableListWheelScrollView({Key? key, required this.onNumberSelected})
+  const DraggableListWheelScrollView({Key? key, required this.onNumberSelected,})
       : super(key: key);
 
   @override
@@ -46,7 +46,7 @@ class DraggableListWheelScrollViewState
           },
           childDelegate: ListWheelChildBuilderDelegate(
             builder: (context, index) => Text(index.toString()),
-            childCount: 100,
+            childCount: 250,
           ),
         ),
       ),

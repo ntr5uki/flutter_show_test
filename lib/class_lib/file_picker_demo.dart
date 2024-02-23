@@ -51,14 +51,20 @@ class FilePickerDemoState extends State<FilePickerDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+    return Flexible(
+      flex: 1,
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+            ),
+          ),
+          onPressed: pickAndReadFile,
+          child: const Text('Pick File'),
         ),
       ),
-      onPressed: pickAndReadFile,
-      child: const Text('Pick File'),
     );
   }
 }

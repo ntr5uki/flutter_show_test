@@ -5,6 +5,7 @@ import 'class_lib/animated_number_container.dart';
 import 'class_lib/image_display_page.dart';
 import 'package:flutter/material.dart';
 import 'class_lib/number_selector.dart';
+import 'class_lib/socket_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -80,6 +81,16 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void _handlesocketPicked(Map? data) {
+    if (data != null) {
+      setState(() {
+        _receivedImageData = data['fileData'];
+        _bmpHead = data['bmpHead'];
+        _counter = data['fileData'].length;
+      });
+    }
+  }
+
   void _numberSelected(int number) {
     setState(() {
       _index = number;
@@ -117,14 +128,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   const Text("左侧内容"),
                   Text(_index.toString()),
                   DraggableListWheelScrollView(
-                      onNumberSelected: _numberSelected),
+                    onNumberSelected: _numberSelected,
+                  ),
                 ]),
             const VerticalDivider(),
             Expanded(
               // width: 800,
-              // margin: const EdgeInsets.all(5),
+
               child: ListView(
                 children: [
+                  const Padding(padding: EdgeInsets.only(top: 15)), // 20像素的垂直间隔
+
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -135,26 +149,36 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color.fromARGB(221, 211, 13, 13),
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        child: ElevatedButton(
-                          onPressed: _incrementCounter,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  3), // 这里的10可以根据需要调整为任何数值
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              margin: const EdgeInsets.all(5),
+                              child: ElevatedButton(
+                                onPressed: _incrementCounter,
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        3), // 这里的10可以根据需要调整为任何数值
+                                  ),
+                                ),
+                                child: const Text('Start Incrementing'),
+                              ),
                             ),
                           ),
-                          child: const Text('Start Incrementing'),
-                        ),
+                          FilePickerDemo(
+                            width: _width,
+                            height: _height,
+                            onFilePicked: _handleFilePicked,
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        child: FilePickerDemo(
-                          width: _width,
-                          height: _height,
-                          onFilePicked: _handleFilePicked,
-                        ),
+                      SocketPickerDemo(
+                        width: _width,
+                        height: _height,
+                        onSocketPicked: _handlesocketPicked,
                       ),
                       AnimatedNumberContainer(
                         end: _counter,
