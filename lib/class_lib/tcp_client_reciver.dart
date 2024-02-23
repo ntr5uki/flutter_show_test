@@ -11,11 +11,13 @@ class TcpClientRecivier {
   final DataReceivedCallback onDataReceived;
   final int desiredLength;
 
-  TcpClientRecivier({required this.onDataReceived, required this.desiredLength});
+  TcpClientRecivier(
+      {required this.onDataReceived, required this.desiredLength});
 
   Future<void> connect(String host, int port) async {
     _socket = await RawSocket.connect(host, port);
-    _subscription = _socket!.listen(_onData, onDone: _onDone, onError: _onError);
+    _subscription =
+        _socket!.listen(_onData, onDone: _onDone, onError: _onError);
   }
 
   void _onData(RawSocketEvent event) {
@@ -23,9 +25,28 @@ class TcpClientRecivier {
       final data = _socket!.read();
       if (data != null) {
         _dataBuilder.add(data);
-        if (_dataBuilder.length >= desiredLength) {
-          // 调用回调函数
-          onDataReceived(_dataBuilder.takeBytes());
+        while (_dataBuilder.length >= desiredLength) {
+          // 获取前 desiredLength 个字节
+          Uint8List fullData = _dataBuilder.takeBytes();
+          Uint8List imageData =
+              Uint8List.sublistView(fullData, 0, desiredLength);
+
+          // 调用回调函数处理 imageData
+          onDataReceived(imageData);
+          print('$imageData[1],$imageData[2],$imageData[3]');
+
+          // 移除已处理的数据
+          int remainingLength = _dataBuilder.length - desiredLength;
+
+          // 清除 dataBuilder 并添加剩余的数据
+          if (remainingLength > 0) {
+            Uint8List remainingData = Uint8List.sublistView(
+              fullData,
+              desiredLength,
+              fullData.length,
+            );
+            _dataBuilder.add(remainingData);
+          }
         }
       }
     }

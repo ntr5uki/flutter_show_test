@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'class_lib/tcp_client_reciver.dart';
 
 void main() {
-  runApp(ImageDisplayWidget());
+  runApp(const ImageDisplayWidget());
 }
 
 class ImageDisplayWidget extends StatefulWidget {
+  const ImageDisplayWidget({super.key});
+
   @override
-  _ImageDisplayWidgetState createState() => _ImageDisplayWidgetState();
+  ImageDisplayWidgetState createState() => ImageDisplayWidgetState();
 }
 
-class _ImageDisplayWidgetState extends State<ImageDisplayWidget> {
+class ImageDisplayWidgetState extends State<ImageDisplayWidget> {
   late Socket socket;
   Uint8List? imageBytes;
   late TcpClientRecivier tcpClientHelper;
@@ -31,11 +33,12 @@ class _ImageDisplayWidgetState extends State<ImageDisplayWidget> {
 
   @override
   void initState() {
+    super.initState();
     tcpClientHelper = TcpClientRecivier(
       onDataReceived: _handleDataReceived,
       desiredLength: 1024 * 1000 + 1078,
     );
-    super.initState();
+
     tcpClientHelper.connect('localhost', 30000);
   }
 
@@ -51,17 +54,17 @@ class _ImageDisplayWidgetState extends State<ImageDisplayWidget> {
   @override
   Widget build(BuildContext context) {
     return RotatedBox(
-        quarterTurns: -1,
-        child: RepaintBoundary(
-          child: imageBytes != null
-              ? Image.memory(
-                  imageBytes!,
-                  gaplessPlayback: true,
-                  fit: BoxFit.fill,
-                )
-              : const CircularProgressIndicator(),
-        ),
-      );
+      quarterTurns: -1,
+      child: RepaintBoundary(
+        child: imageBytes != null
+            ? Image.memory(
+                imageBytes!,
+                gaplessPlayback: true,
+                fit: BoxFit.fill,
+              )
+            : const CircularProgressIndicator(),
+      ),
+    );
   }
 
   @override
