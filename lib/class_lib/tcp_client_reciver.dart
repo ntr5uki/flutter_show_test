@@ -33,10 +33,11 @@ class TcpClientRecivier {
 
           // 调用回调函数处理 imageData
           onDataReceived(imageData);
-          print('$imageData[1],$imageData[2],$imageData[3]');
+          // print('${imageData[1]},${imageData[2]},${imageData[3]}');
 
           // 移除已处理的数据
-          int remainingLength = _dataBuilder.length - desiredLength;
+          int remainingLength = fullData.length - desiredLength;
+          // print('remainingLength:${remainingLength-desiredLength}');
 
           // 清除 dataBuilder 并添加剩余的数据
           if (remainingLength > 0) {

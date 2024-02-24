@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 import 'class_lib/file_picker_demo.dart';
 import 'class_lib/animated_number_container.dart';
+import 'class_lib/preview_img.dart';
 // import 'class_lib/image_player.dart';
-import 'class_lib/image_display_page.dart';
+// import 'class_lib/image_display_page.dart';
 import 'package:flutter/material.dart';
 import 'class_lib/number_selector.dart';
 import 'class_lib/socket_picker.dart';
@@ -20,21 +21,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Show test1',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
@@ -183,14 +169,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       AnimatedNumberContainer(
                         end: _counter,
                       ),
-                      ImageDisplayPage(
-                        greyImageData: _receivedImageData,
-                        width: _width,
-                        height: _height,
-                        startPoint: _index,
-                        bmpHead: _bmpHead,
-                        // onDataUpdated: _currentIndexcallback,
-                      ),
+                      const ImagePreviewWidget(),
+                      // ImageDisplayPage(
+                      //   greyImageData: _receivedImageData,
+                      //   width: _width,
+                      //   height: _height,
+                      //   startPoint: _index,
+                      //   bmpHead: _bmpHead,
+                      // ),
                     ],
                   ),
                 ],
