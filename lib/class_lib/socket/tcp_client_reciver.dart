@@ -1,3 +1,4 @@
+// import 'dart:ffi';
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
@@ -18,6 +19,10 @@ class TcpClientRecivier {
     _socket = await RawSocket.connect(host, port);
     _subscription =
         _socket!.listen(_onData, onDone: _onDone, onError: _onError);
+  }
+
+  void socketClose() {
+    _socket?.close();
   }
 
   void _onData(RawSocketEvent event) {

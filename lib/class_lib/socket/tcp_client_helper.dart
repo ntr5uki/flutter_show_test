@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:get/get.dart';
+import '../state/logger_service.dart';
 
 class TcpClientHelper {
   RawSocket? _socket;
@@ -10,15 +12,16 @@ class TcpClientHelper {
 
   Future<void> connect(String host, int port) async {
     _socket = await RawSocket.connect(host, port);
-    _subscription = _socket!.listen(_onData, onDone: _onDone, onError: _onError);    
-    
+    _subscription =
+        _socket!.listen(_onData, onDone: _onDone, onError: _onError);
   }
-  int getDatabuliderLength(){
+
+  int getDatabuliderLength() {
     return _dataBuilder.length;
   }
 
   void _onData(RawSocketEvent event) {
-    print('${event}');
+    // print('${event}');
     if (event == RawSocketEvent.read) {
       final data = _socket!.read();
       if (data != null) {
@@ -28,7 +31,8 @@ class TcpClientHelper {
   }
 
   void _onDone() {
-    print('_onDone');
+    final logger = Get.find<LoggerService>().logger;
+    logger.d('_onDone');
     _subscription.cancel();
     _completer.complete(_dataBuilder.takeBytes());
   }
@@ -40,7 +44,9 @@ class TcpClientHelper {
 
   Future<Uint8List> readAvailableData() async {
     Uint8List outdata = _dataBuilder.takeBytes();
-    print('outdata length :${outdata.length}');    
+    final logger = Get.find<LoggerService>().logger;
+    logger.d('outdata length :${outdata.length}');
+    // print('outdata length :${outdata.length}');
     return outdata;
   }
 

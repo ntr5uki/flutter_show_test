@@ -3,17 +3,12 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'create_bmp_image.dart';
+import '../set_app_data.dart';
+import 'package:get/get.dart';
 // import 'package:flutter_image/flutter_image.dart';
 
 class FilePickerDemo extends StatefulWidget {
-  final Function(Map?) onFilePicked;
-  final int width, height;
-  const FilePickerDemo({
-    Key? key,
-    required this.onFilePicked,
-    required this.width,
-    required this.height,
-  }) : super(key: key);
+  const FilePickerDemo({Key? key}) : super(key: key);
 
   @override
   FilePickerDemoState createState() => FilePickerDemoState();
@@ -40,12 +35,19 @@ class FilePickerDemoState extends State<FilePickerDemo> {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
+      //使用getx获取参数
+      final controller = Get.find<SetAppDataController>();
+      int width = controller.octWidth.value;
+      int height = controller.octHeight.value;
       File file = File(result.files.single.path!);
       Uint8List fileData = await file.readAsBytes();
       Uint8List bmpHead = await File('assets/dat/bmphead.dat').readAsBytes();
-      bmpHead = createBmpImage(widget.width, widget.height, bmpHead);
-
-      widget.onFilePicked({"fileData": fileData, "bmpHead": bmpHead});
+      bmpHead = createBmpImage(width, height, bmpHead);
+      //更新getx中的参数
+      controller.startPoint.value = 0;
+      controller.receivedImageData.value = fileData;
+      controller.bmpHead.value = bmpHead;     
+      controller.tempIndex.value = fileData.length;
     }
   }
 
@@ -58,7 +60,7 @@ class FilePickerDemoState extends State<FilePickerDemo> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3), // 这里的10可以根据需要调整为任何数值
+              borderRadius: BorderRadius.circular(3), 
             ),
           ),
           onPressed: pickAndReadFile,

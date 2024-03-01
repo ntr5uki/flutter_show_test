@@ -1,15 +1,27 @@
-import 'dart:typed_data';
-import 'class_lib/file_picker_demo.dart';
-import 'class_lib/animated_number_container.dart';
+// import 'dart:typed_data';
+import 'package:flutter_show_test/class_lib/set_app_data.dart';
+import 'package:get/get.dart';
+// import 'class_lib/file_picker_demo.dart';
+// import 'class_lib/animated_number_container.dart';
 import 'class_lib/preview_img.dart';
 // import 'class_lib/image_player.dart';
 // import 'class_lib/image_display_page.dart';
 import 'package:flutter/material.dart';
 import 'class_lib/number_selector.dart';
-import 'class_lib/socket_picker.dart';
+import 'class_lib/page_result.dart';
+// import 'class_lib/socket_picker.dart';
+import 'class_lib/logger_service.dart';
 
-void main() {
+void main() async {
+  await initServices(); // 初始化Getx
   runApp(const MyApp());
+}
+
+Future<void> initServices() async {
+  await Get.putAsync(() => LoggerService().init());
+  Get.put(SetAppDataController());
+  final logger = Get.find<LoggerService>().logger;
+  logger.i('init finish');
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +30,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Show test1',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -48,47 +60,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  int _index = 0;
-  final int _width = 1024;
-  final int _height = 1000;
-  Uint8List? _receivedImageData;
+  final controller = Get.find<SetAppDataController>();
+  // int _index = 0;
+  // final int _width = 1024;
+  // final int _height = 1000;
+  // Uint8List? _receivedImageData;
   // Uint8List? _currentBmpData;
-  Uint8List? _bmpHead;
   // Uint8List? _imgin = [];
-
-  void _handleFilePicked(Map? data) {
-    if (data != null) {
-      setState(() {
-        _receivedImageData = data['fileData'];
-        _bmpHead = data['bmpHead'];
-        _counter = _receivedImageData!.length;
-      });
-    }
-  }
-
-  void _handlesocketPicked(Map? data) {
-    if (data != null) {
-      setState(() {
-        _receivedImageData = data['fileData'];
-        _bmpHead = data['bmpHead'];
-        _counter = data['fileData'].length;
-      });
-    }
-  }
-
-  void _numberSelected(int number) {
-    setState(() {
-      _index = number;
-    });
-    // 这里可以添加更多的逻辑，比如更新startPoint
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter = _counter + 10;
-    });
-  }
+  // void _numberSelected(int number) {
+  //   setState(() {
+  //     _index = number;
+  //   }); // 这里可以添加更多的逻辑，比如更新startPoint
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,85 +87,57 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // 根据需要调整对齐方式
+          // mainAxisAlignment: MainAxisAlignment.left, // 根据需要调整对齐方式
           children: [
+            SizedBox(
+              width: 35,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () => controller.switchPage(1),
+                      icon: const Icon(Icons.photo),
+                    ),
+                    IconButton(
+                      onPressed: () => controller.switchPage(0),
+                      icon: const Icon(Icons.camera_alt),
+                    ),
+                  ]),
+            ),
+            const VerticalDivider(),
             // 这里放置您想要在左侧显示的小部件
             Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 // 例如，一个容器或其他小部件
                 children: [
                   const Text("左侧内容"),
-                  Text(_index.toString()),
-                  DraggableListWheelScrollView(
-                    onNumberSelected: _numberSelected,
-                  ),
+                  Obx(() => Text(controller.startPoint.toString())),
+                  const DraggableListWheelScrollView(),
                 ]),
             const VerticalDivider(),
-            Expanded(
-              // width: 800,
-
-              child: ListView(
-                children: [
-                  const Padding(padding: EdgeInsets.only(top: 15)), // 20像素的垂直间隔
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Text(
-                        '按下后数字增加10:',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color.fromARGB(221, 211, 13, 13),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              child: ElevatedButton(
-                                onPressed: _incrementCounter,
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        3), // 这里的10可以根据需要调整为任何数值
-                                  ),
-                                ),
-                                child: const Text('Start Incrementing'),
-                              ),
-                            ),
-                          ),
-                          FilePickerDemo(
-                            width: _width,
-                            height: _height,
-                            onFilePicked: _handleFilePicked,
-                          ),
-                        ],
-                      ),
-                      SocketPickerDemo(
-                        width: _width,
-                        height: _height,
-                        onSocketPicked: _handlesocketPicked,
-                      ),
-                      AnimatedNumberContainer(
-                        end: _counter,
-                      ),
-                      const ImagePreviewWidget(),
-                      // ImageDisplayPage(
-                      //   greyImageData: _receivedImageData,
-                      //   width: _width,
-                      //   height: _height,
-                      //   startPoint: _index,
-                      //   bmpHead: _bmpHead,
-                      // ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            const PageSwitch(),
           ]),
     );
+  }
+}
+
+class PageSwitch extends StatelessWidget {
+  const PageSwitch({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<SetAppDataController>();
+    return Obx(() {
+      switch (controller.showPage.value) {
+        case 0:
+          return const ImagePreviewWidget();
+        case 1:
+          return PageResultWidget();
+        default:
+          return PageResultWidget();
+      }
+    });
   }
 }

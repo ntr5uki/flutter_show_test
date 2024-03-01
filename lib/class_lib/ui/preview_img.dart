@@ -1,8 +1,10 @@
-import 'dart:io';
+// import 'dart:io';
 // import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'tcp_client_reciver.dart';
+import 'socket/tcp_client_reciver.dart';
+import 'package:get/get.dart';
+import 'state/logger_service.dart';
 
 class ImagePreviewWidget extends StatefulWidget {
   const ImagePreviewWidget({super.key});
@@ -11,7 +13,7 @@ class ImagePreviewWidget extends StatefulWidget {
 }
 
 class ImagePreviewWidgetState extends State<ImagePreviewWidget> {
-  late Socket socket;
+  // late Socket socket;
   Uint8List? imageBytes;
   late TcpClientRecivier tcpClientHelper;
   void _handleDataReceived(Uint8List data) {
@@ -33,19 +35,22 @@ class ImagePreviewWidgetState extends State<ImagePreviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 800,
-      height: 400,
-      child: RotatedBox(
-        quarterTurns: -1,
-        child: RepaintBoundary(
-          child: imageBytes != null
-              ? Image.memory(
-                  imageBytes!,
-                  gaplessPlayback: true,
-                  fit: BoxFit.fill,
-                )
-              : const Center(child: CircularProgressIndicator())
+    return Flexible(
+      child: Center(
+        child: SizedBox(
+          width: 800,
+          height: 400,
+          child: RotatedBox(
+            quarterTurns: -1,
+            child: RepaintBoundary(
+                child: imageBytes != null
+                    ? Image.memory(
+                        imageBytes!,
+                        gaplessPlayback: true,
+                        fit: BoxFit.fill,
+                      )
+                    : const Center(child: CircularProgressIndicator())),
+          ),
         ),
       ),
     );
@@ -53,7 +58,11 @@ class ImagePreviewWidgetState extends State<ImagePreviewWidget> {
 
   @override
   void dispose() {
-    socket.close();
+    tcpClientHelper.socketClose();
+    final logger = Get.find<LoggerService>().logger;
+    logger.i('Socket Closed');
+    // Get.snackbar('message', 'Socket Closed');
+    // socket.close();
     super.dispose();
   }
 }
