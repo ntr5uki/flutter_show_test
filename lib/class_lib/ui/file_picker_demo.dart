@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'create_bmp_image.dart';
-import '../set_app_data.dart';
+import '../state/set_app_data.dart';
 import 'package:get/get.dart';
 // import 'package:flutter_image/flutter_image.dart';
 

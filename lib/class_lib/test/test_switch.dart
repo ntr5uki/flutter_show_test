@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'state/logger_service.dart';
+import '../state/logger_service.dart';
 
 void main() async {
   await initServices(); // 初始化Logger

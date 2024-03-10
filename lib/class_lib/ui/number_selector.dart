@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'set_app_data.dart';
+import '../state/set_app_data.dart';
 
 class DraggableListWheelScrollView extends StatefulWidget {
   const DraggableListWheelScrollView({Key? key}) : super(key: key);

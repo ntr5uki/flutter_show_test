@@ -2,9 +2,9 @@
 // import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'socket/tcp_client_reciver.dart';
+import '../socket/tcp_client_reciver.dart';
 import 'package:get/get.dart';
-import 'state/logger_service.dart';
+import '../state/logger_service.dart';
 
 class ImagePreviewWidget extends StatefulWidget {
   const ImagePreviewWidget({super.key});

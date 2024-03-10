@@ -1,7 +1,7 @@
 // import 'dart:math';
 // import 'dart:io';
 import 'package:get/get.dart';
-import '../set_app_data.dart';
+import '../state/set_app_data.dart';
 import 'package:flutter/material.dart';
 // import 'dart:async';
 import 'dart:typed_data';

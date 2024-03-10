@@ -1,16 +1,16 @@
 // import 'dart:typed_data';
-import 'package:flutter_show_test/class_lib/set_app_data.dart';
+import 'package:flutter_show_test/class_lib/state/set_app_data.dart';
 import 'package:get/get.dart';
 // import 'class_lib/file_picker_demo.dart';
 // import 'class_lib/animated_number_container.dart';
-import 'class_lib/preview_img.dart';
+import 'class_lib/ui/preview_img.dart';
 // import 'class_lib/image_player.dart';
 // import 'class_lib/image_display_page.dart';
 import 'package:flutter/material.dart';
-import 'class_lib/number_selector.dart';
-import 'class_lib/page_result.dart';
+import 'class_lib/ui/number_selector.dart';
+import 'class_lib/ui/page_result.dart';
 // import 'class_lib/socket_picker.dart';
-import 'class_lib/logger_service.dart';
+import 'class_lib/state/logger_service.dart';
 
 void main() async {
   await initServices(); // 初始化Getx

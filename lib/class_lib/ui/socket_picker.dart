@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'create_bmp_image.dart';
 import 'package:get/get.dart';
 import '../state/logger_service.dart';
-import '../set_app_data.dart';
+import '../state/set_app_data.dart';
 
 // import 'package:flutter_image/flutter_image.dart';
 

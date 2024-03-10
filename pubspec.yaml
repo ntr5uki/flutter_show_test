@@ -44,6 +44,10 @@ dependencies:
   get: ^4.6.6
   isar: ^3.1.0+1
   isar_generator: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0+1
+  build_runner: ^2.4.8
+  analyzer: ^5.13.0
+  path: ^1.9.0
 
 
 dev_dependencies:

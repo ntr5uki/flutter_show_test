@@ -5,7 +5,7 @@ import 'animated_number_container.dart';
 import 'image_display_page.dart';
 import 'package:flutter/material.dart';
 import 'socket_picker.dart';
-import 'set_app_data.dart';
+import '../state/set_app_data.dart';
 
 class PageResultWidget extends StatelessWidget {
   // Uint8List? _receivedImageData;
