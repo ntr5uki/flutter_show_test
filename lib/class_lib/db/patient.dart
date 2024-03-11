@@ -9,7 +9,7 @@ class Patient {
   late String pID; // 患者ID，唯一值
 
   late String name; // 患者姓名
-  late String phoneNumber; // 电话号码
+  String? phoneNumber; // 电话号码
   String? address; // 地址
   DateTime? birthdate; // 出生日期，可为空
   List<Check>? checks; // 检查记录

@@ -11,6 +11,8 @@ import 'class_lib/ui/number_selector.dart';
 import 'class_lib/ui/page_result.dart';
 // import 'class_lib/socket_picker.dart';
 import 'class_lib/state/logger_service.dart';
+import 'class_lib/ui/patients_page.dart';
+import 'class_lib/state/patients_state.dart';
 
 void main() async {
   await initServices(); // 初始化Getx
@@ -18,6 +20,7 @@ void main() async {
 }
 
 Future<void> initServices() async {
+  Get.put(PatientController());
   await Get.putAsync(() => LoggerService().init());
   Get.put(SetAppDataController());
   final logger = Get.find<LoggerService>().logger;
@@ -102,6 +105,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () => controller.switchPage(0),
                       icon: const Icon(Icons.camera_alt),
                     ),
+                    IconButton(
+                      onPressed: () => controller.switchPage(2),
+                      icon: const Icon(Icons.manage_accounts),
+                    ),
                   ]),
             ),
             const VerticalDivider(),
@@ -135,8 +142,10 @@ class PageSwitch extends StatelessWidget {
           return const ImagePreviewWidget();
         case 1:
           return PageResultWidget();
+        case 2:
+          return const PatientEntryForm();
         default:
-          return PageResultWidget();
+          return const PatientEntryForm();
       }
     });
   }

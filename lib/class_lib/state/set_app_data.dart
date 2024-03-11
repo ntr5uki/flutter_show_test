@@ -6,7 +6,7 @@ class SetAppDataController extends GetxController {
   var octHeight = 1000.obs;
   var startPoint = 0.obs;
   var tempIndex = 0.obs;
-  var showPage = 0.obs;
+  var showPage = 2.obs;
   Rx<Uint8List?> bmpHead = Rxn<Uint8List>();
   Rx<Uint8List?> receivedImageData = Rxn<Uint8List>();
 

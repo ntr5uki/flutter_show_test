@@ -32,3 +32,6 @@ Get.defaultDialog(
 ```dart
 import 'package:get/get.dart';
 ```
+### 其他
+flutter的内置图标库
+https://api.flutter.dev/flutter/material/Icons-class.html

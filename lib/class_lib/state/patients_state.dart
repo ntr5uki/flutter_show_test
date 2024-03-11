@@ -5,15 +5,30 @@ import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:logger/logger.dart';
 import '../db/patient.dart';
+import 'package:flutter/material.dart';
+import 'dart:core';
 
 class PatientController extends GetxController {
   late final Isar isar;
-  var currentPatient = Patient().obs;
+  Rx<Patient> currentPatient = Patient().obs;
+  RxList<Patient> patients = <Patient>[].obs;
+  final TextEditingController pIDController = TextEditingController();
 
+  /// Initializes the state of the patients module.
+  /// This method is called when the state is being initialized.
+  /// It opens the Isar database and assigns it to the [isar] variable.
   @override
   void onInit() async {
     super.onInit();
     isar = await openIsar();
+  }
+
+  T safeGetProperty<T>(T Function() getProperty, T defaultValue) {
+    try {
+      return getProperty();
+    } catch (e) {
+      return defaultValue; // 返回默认值
+    }
   }
 
   Future<Isar> openIsar() async {
@@ -32,14 +47,31 @@ class PatientController extends GetxController {
     );
   }
 
+  void setGender(Gender newGender) {
+    currentPatient.update((val) {
+      val?.gender = newGender;
+    });
+  }
+
+  void setBirthdate(DateTime newDate) {
+    currentPatient.update((val) {
+      val?.birthdate = newDate;
+    });
+  }
+
   void setCurrentPatient(Patient patient) {
     currentPatient.value = patient;
+  }
+
+  void createNewPatient() {
+    currentPatient(Patient());
+    pIDController.clear();
   }
 
   Future<void> savePatientToDatabase() async {
     final logger = Logger(
       printer: PrettyPrinter(
-        methodCount: 0,
+        methodCount: 2,
         printTime: false,
       ),
     );
@@ -52,5 +84,17 @@ class PatientController extends GetxController {
       logger.e('$e');
       // 这里可以根据错误类型进行更详细的处理
     }
+  }
+
+  Future<void> fetchPatientsFromDatabase() async {
+    final allPatients = await isar.patients.where().findAll();
+    patients.value = allPatients;
+  }
+
+  @override
+  void onClose() {
+    // 当控制器被释放时，清理控制器资源
+    pIDController.dispose();
+    super.onClose();
   }
 }

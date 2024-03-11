@@ -110,7 +110,12 @@ int _patientEstimateSize(
   }
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.pID.length * 3;
-  bytesCount += 3 + object.phoneNumber.length * 3;
+  {
+    final value = object.phoneNumber;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -155,7 +160,7 @@ Patient _patientDeserialize(
   object.id = id;
   object.name = reader.readString(offsets[4]);
   object.pID = reader.readString(offsets[5]);
-  object.phoneNumber = reader.readString(offsets[6]);
+  object.phoneNumber = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -185,7 +190,7 @@ P _patientDeserializeProp<P>(
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -1070,8 +1075,24 @@ extension PatientQueryFilter
     });
   }
 
+  QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'phoneNumber',
+      ));
+    });
+  }
+
+  QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'phoneNumber',
+      ));
+    });
+  }
+
   QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1084,7 +1105,7 @@ extension PatientQueryFilter
   }
 
   QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1099,7 +1120,7 @@ extension PatientQueryFilter
   }
 
   QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1114,8 +1135,8 @@ extension PatientQueryFilter
   }
 
   QueryBuilder<Patient, Patient, QAfterFilterCondition> phoneNumberBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1463,7 +1484,7 @@ extension PatientQueryProperty
     });
   }
 
-  QueryBuilder<Patient, String, QQueryOperations> phoneNumberProperty() {
+  QueryBuilder<Patient, String?, QQueryOperations> phoneNumberProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'phoneNumber');
     });
